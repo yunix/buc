@@ -1,0 +1,52 @@
+<%
+	if @preferences["region"] =="None"
+		
+		links = {}
+		links["link_spirituality"] =menu_item.url
+		links["link_vitality"] = @preferences["Vitality_url"]
+		links["link_service"] = @preferences["Service_url"]
+		
+	else
+		links = region_link(@preferences["region"])
+	end
+		
+
+
+%>	
+ 
+ <div class="widget basic widgetdiv1">
+    <div class="widget basic widgetdiv2">
+      <div class="widget basic widgetdiv3">
+        <div class="widget basic widgetdiv4">
+          <h3 class="widgettitle"><%= _('My Whole Life') %></h3>
+          <div class="widgetcontent">
+		    <p>I was born to reflect the image of a God who is powerful enough to create my universe, attentive enough to hear my prayers and 
+		    loving enough to be defined by self-sacrifice. I find my greatest fulfillment on a journey toward purpose and wholeness.</p>
+		    <ul class="cf">
+			<li id="adventistSpirituality" class="adventist-life-callout">
+			    <a target="_blank" href="http://<%=links["link_spirituality"]%>">
+				<strong>Spirituality</strong>
+				My God loves without restraint...
+				<span class="go"></span>
+			    </a>
+			</li>
+			<li id="adventistVitality" class="adventist-life-callout">
+			    <a target="_blank" href="http://<%=links["link_vitality"]%>">
+				<strong>Vitality</strong>
+				My Life is a gift to be valued...
+				<span class="go"></span>
+			    </a>
+			</li>
+			<li id="adventistService" class="adventist-life-callout">
+			    <a target="_blank" href="http://<%=links["link_service"]%>">
+				<strong>Service</strong>
+							 My World is a place where people find hope...
+					 <span class="go"></span>
+			    </a>
+			</li>
+		    </ul>
+	  </div>
+        </div>
+      </div>
+    </div>
+  </div>

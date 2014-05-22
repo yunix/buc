@@ -1,0 +1,9 @@
+ukadventistid:
+  title:      "UK Adventist ID"
+  author:     "British Union Conference"
+  view_name:  "ukadventistid_widget.html.erb"
+  form_name:  "ukadventistid_widget_preferences.html.erb"
+  default_values:
+    title: "UK Adventist ID"
+    default_region: "National"
+    

@@ -1,0 +1,62 @@
+<%= link_to _('Close'), '#', :class => 'link_chooser_cancel_link close'  %>
+<div class="topbar">
+  <h3 class="link"><%= _('Insert a Link') %></h3>
+</div>
+
+<div class="stepsGray">
+  <ul class="steps noNumbers">
+    <li class="selected" id="link_to_content_tab"><span><%= link_to _('Link to Content'), '#', :id => 'link_to_content'  %></span></li>
+    <li class="seperator">&nbsp;</li>
+  </ul>
+</div>
+
+<% form_tag 'link_form' do -%>
+<div class="link_chooser lightboxContent">
+
+  <div id="content_link">
+    <dl>
+      <dt><label><%= _("Select the type of content you would like to link to.") %></label></dt>
+      <dd><%= select_tag 'menu_item[category]', menu_item_categories(@menu_category), :id => 'menu_item_category', :class => 'textBox' -%></dd>
+    </dl>
+    <dl>
+      <dt><%= _("Then choose a piece of content from the second list.") %></dt>
+      <dd>
+        <%= select_tag 'menu_item[url]', menu_item_options(@menu_category || menu_item_categories.first, params[:href]), :id => 'menu_item_select', :class => 'textBox' %>
+	        <span id="spinner" style="display:none;">
+          <%= image_tag('icons/spinner.gif') %>
+        </span>
+      </dd>
+    </dl>
+  </div>
+  
+ 
+  <div class="buttonWrapper">     
+    <%= submit_tag _('Insert'), :class => 'button link_chooser_submit_link' %>
+    <%= link_to _('Cancel'), '#', :class => 'button darkGray link_chooser_cancel_link' %>
+  </div>
+<% end %>
+
+<script type="text/javascript" charset="utf-8">
+    $$('.link_chooser_submit_link').each(function(el){
+      el.observe('click', function(ev){
+        ev.stop();
+        var url = '';
+        url = $('menu_item_select').value;
+        window.parent.$('<%= @callback_id -%>').value = url;
+	window.parent.Dialog.closeInfo();
+		
+      });
+    });
+    
+  var el = $('menu_item_category');
+    el.observe('change', function() {
+      $('spinner').show(); 
+      new Ajax.Request('<%= content_list_admin_menu_items_url %>', {
+        method: 'get', 
+        parameters: {
+          category_id: 'menu_item_select',
+          spinner_id: 'spinner',
+          category: this.value
+      }});
+    }.bind(el));
+</script>
