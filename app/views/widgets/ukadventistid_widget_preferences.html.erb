@@ -1,164 +1,128 @@
 <%
-	# widget preferences
-	identity = ['Spirituality', 'Vitality', 'Service']
-
-	buc_regions = [
-	    ['None', 'None'],
-	    ['BUC', 'National'],
-	    ['SEC', 'SEC'],
-	    ['NEC', 'NEC'],
-	    ['IM','IM'],
-	    ['SM','SM'],
-	    ['WM', 'WM']
-	  ]
-  
+# widget preferences
+buc_regions = [
+  ['',''],
+  ['I prefer a content page', ''],
+  ['BUC', 'National'],
+  ['SEC', 'SEC'],
+  ['NEC', 'NEC'],
+  ['IM','IM'],
+  ['SM','SM'],
+  ['WM', 'WM']  
+]
 %>
-
-
 <div class="topbar">
   <h3><%= _('Customize Your Adventist Identity Links') %></h3>
 </div>
-
-<div class="stepsGray">
-  <ul class="steps noNumbers">
-    <li class="selected" id="link_to_spirituality_tab"><span><%= link_to _('Link for Spirituality'), '#', :id => 'link_for_spirituality'  %></span></li>
-    <li id="link_to_vitality_tab"><span><%= link_to _('Link for Vitality'), '#', :id => 'link_for_vitality' %></span></li>
-    <li id="link_to_service_tab"><span><%= link_to _('Link for Service'), '#', :id => 'link_for_service' %></span></li>
+<div class="stepsDark">
+  <ul id="widget_config_tabs_list" class="steps widget_config_tabs">
+    <li><span><%= link_to _('Spirituality'), '#', :class => 'toggle-link', :id => 'display_spirituality_link' %></span></li>
+    <li><span><%= link_to _('Vitality'), '#', :class => 'toggle-link', :id => 'display_vitality_link' %></span></li>
+    <li><span><%= link_to _('Service'), '#', :class => 'toggle-link', :id => 'display_service_link' %></span></li>
     <li class="seperator">&nbsp;</li>
   </ul>
 </div>
 
-
-
-
 <% widget_form_tag(template_container, contained_widget) do -%>
-	<div class="lightboxContent">
-		
-		<div id="sp_content">
-		
-		<dl>
-			<dt><%= _('Do you want to link to a region?') %></dt>
-			<%= select_tag 'preference_values[region]', options_for_select(buc_regions), :onchange => 'setregion(this)' %>
-		</dl>
-		<dl>
-			<dt><%= _('--OR -- Do you want to link to a Page Content instead?') %></dt>
-		</dl>	
-		
-		    <dl>
-		      <dt><label><%= _("Select the type of content you would like to link to.") %></label></dt>
-		      <dd><%= select_tag 'menu_item[category]', menu_item_categories(@menu_category), :id => 'sp',  :onchange => 'populate_items(this)',:class => 'textBox' -%></dd>
-		    </dl>
-		    <dl>
-		      <dt><%= _("Then choose a piece of content from the second list.") %></dt>
-		      <dd>
-			<%= select_tag 'menu_item[url]', menu_item_options(@menu_category || menu_item_categories.first, params[:href]), :id => 'menu_item_select_sp',  :onchange => 'take_link(this)',:class => 'textBox' -%>
-			<span id="spinner_sp" style="display:none;">
-			  <%= image_tag('icons/spinner.gif') %>
-			</span>
-		      </dd>
-		    </dl>
-		    <%= hidden_field_tag 'preference_values[spirituality]', '', :id => 'preference_values[spirituality]' %>
-		</div>
-		  
-		  
-		<div id="vit_content" style="display:none">
-		    <dl>
-		      <dt><label><%= _("Select the type of content you would like to link to.") %></label></dt>
-		      <dd><%= select_tag 'menu_item[category]', menu_item_categories(@menu_category), :id => 'vit', :onchange => 'populate_items(this)',:class => 'textBox' -%></dd>
-		    </dl>
-		    <dl>
-		      <dt><%= _("Then choose a piece of content from the second list.") %></dt>
-		      <dd>
-			<%= select_tag 'menu_item[url]', menu_item_options(@menu_category || menu_item_categories.first, params[:href]), :id => 'menu_item_select_vit',  :class => 'textBox' -%>
-			<span id="spinner_vit" style="display:none;">
-			  <%= image_tag('icons/spinner.gif') %>
-			</span>
-		      </dd>
-		    </dl>
-		    <%= hidden_field_tag 'preference_values[url_vit]', '', :id => 'preference_values[url_vit]' %>
-		</div>
-		  
-		<div id="serv_content" style="display:none">
-		    <dl>
-		      <dt><label><%= _("Select the type of content you would like to link to.") %></label></dt>
-		      <dd><%= select_tag 'menu_item[category]', menu_item_categories(@menu_category), :id => 'serv', :onchange => 'populate_items(this)', :class => 'textBox' -%></dd>
-		    </dl>
-		    <dl>
-		      <dt><%= _("Then choose a piece of content from the second list.") %></dt>
-		      <dd>
-			<%= select_tag 'menu_item[url]', menu_item_options(@menu_category || menu_item_categories.first, params[:href]), :id => 'menu_item_select_serv', :class => 'textBox' -%>
-			<span id="spinner_serv" style="display:none;">
-			  <%= image_tag('icons/spinner.gif') %>
-			</span>
-		      </dd>
-		    </dl>
-		    <%= hidden_field_tag 'preference_values[url_serv]', '', :id => 'preference_values[url_serv]' %>
-		</div>
-	</div>
-	
-	
-<% end -%>	
+<div id="display_spirituality" class="lightboxContent">
+
+  <dl>
+    <dt><%= _('Do you want to link to a region?') %></dt>
+    <%=  select_tag 'preference_values[region_sp]', options_for_select(buc_regions), :onchange => "setregion(this, 'sp')" %>
+  </dl>
+  
+  <div id="sp_link_options" style="<%= 'display:none;' unless preference_values['region_sp'].blank? %>">
+  <dl>
+    <dt><label><%= _("Select the type of content you would like to link to.") %></label></dt>
+    <dd><%= select_tag 'preference_values[sp_category]', menu_item_categories(preference_values['sp_category']), :onchange => "populate_items(this, 'sp')", :class => 'textBox' -%></dd>
+  </dl>
+  <dl>
+    <dt><%= _("Then choose a piece of content from the second list.") %></dt>
+    <dd>
+      <%= select_tag 'preference_values[sp_url]', menu_item_options(preference_values['sp_category'], preference_values['sp_url']), :id => 'sp_url', :class => 'textBox' -%>
+      <span id="sp_spinner" style="display:none;">
+        <%= image_tag('icons/spinner.gif') %>
+      </span>
+    </dd>
+  </dl>
+  </div>
+</div>
+
+<div id="display_vitality" class="lightboxContent" style="display:none">
+	<dl>
+    	<dt><%= _('Do you want to link to a region?') %></dt>
+    <%= select_tag 'preference_values[region_vi]', options_for_select(buc_regions), :onchange => "setregion(this, 'vi')" %>
+  	</dl>
+	 <div id="vi_link_options" style="<%= 'display:none;' unless preference_values['region_vi'].blank? %>">
+  	
+  <dl>
+    <dt><label><%= _("Select the type of content you would like to link to.") %></label></dt>
+    <dd><%= select_tag 'preference_values[vi_category]', menu_item_categories(preference_values['vi_category']), :onchange => "populate_items(this, 'vi')", :class => 'textBox' -%></dd>
+  </dl>
+  <dl>
+    <dt><%= _("Then choose a piece of content from the second list.") %></dt>
+    <dd>
+      <%= select_tag 'preference_values[vi_url]', menu_item_options(preference_values['vi_category'], preference_values['vi_url']), :id => 'vi_url', :class => 'textBox' -%>
+      <span id="vi_spinner" style="display:none;">
+        <%= image_tag('icons/spinner.gif') %>
+      </span>
+    </dd>
+  </dl>
+  </div>
+</div>
+
+<div id="display_service" class="lightboxContent" style="display:none">
+ 	<dl>
+    	<dt><%= _('Do you want to link to a region?') %></dt>
+    <%= select_tag 'preference_values[region_se]', options_for_select(buc_regions), :onchange => "setregion(this, 'se')" %>
+  	</dl>
+	<div id="se_link_options" style="<%= 'display:none;' unless preference_values['region_se'].blank? %>">
+ 
+  <dl>
+    <dt><label><%= _("Select the type of content you would like to link to.") %></label></dt>
+    <dd><%= select_tag 'preference_values[se_category]', menu_item_categories(preference_values['se_category']), :onchange => "populate_items(this, 'se')", :class => 'textBox' -%></dd>
+  </dl>
+  <dl>
+    <dt><%= _("Then choose a piece of content from the second list.") %></dt>
+    <dd>
+      <%= select_tag 'preference_values[se_url]', menu_item_options(preference_values['se_category'], preference_values['se_url']), :id => 'se_url', :class => 'textBox' -%>
+      <span id="se_spinner" style="display:none;">
+        <%= image_tag('icons/spinner.gif') %>
+      </span>
+    </dd>
+  </dl>
+  </div>
+</div>
+<% end -%>
 
 <script type="text/javascript" charset="utf-8">
-
-	//go for the menu_items in a category	
-	function populate_items(caller){
-			    var el = caller.id
-			    var targetpond= 'menu_item_select_'+el
-			    var mycategory = caller.value
-			    var myspinner = 'spinner_'+el
-			        $(myspinner).show(); 
-			        new Ajax.Request('<%= content_list_admin_menu_items_url %>', {
-				method: 'get', 
-				parameters: {
-				  category_id: targetpond,
-				  spinner_id: myspinner,
-				  category: caller.value
-			      }});
-	}
-	
-	//the script needs to check if the link is going to be to a region or to a content page. 
-	//At the moment I am just making sure I have the values from the region or from the menu_select_item_xx.
-	//Take_link function is to see if I can grab the value from the menu_select_item_xx
-	function take_link(chosenitem){
-		var selectedval = chosenitem.value;
-		alert(selectedval);
-	}
-	
-	function setregion(thecaller){
-		var myregion = thecaller.value;
-		alert("I am inside regions function "+ myregion);
-		//adding it to preferences for spirituality at the moment, this will changeto assign the value dinamically to the correct key in preference_values array
-		$('preference_values[spirituality]').value = myregion;
-	}
-	
-	//moving through the tabs	
-	$('link_for_spirituality').observe('click', function() {
-	$('sp_content').show();
-	$('vit_content').hide();
-	$('serv_content').hide();
-	$('link_to_spirituality_tab').addClassName('selected');
-	$('link_to_vitality_tab').removeClassName('selected');
-	$('link_to_service_tab').removeClassName('selected');
-	});
-			    
-	$('link_for_vitality').observe('click', function() {
-	$('vit_content').show();
-	$('sp_content').hide();
-	$('serv_content').hide();
-	$('link_to_vitality_tab').addClassName('selected');
-	$('link_to_spirituality_tab').removeClassName('selected');
-	$('link_to_service_tab').removeClassName('selected');
-	});
-	
-	$('link_for_service').observe('click', function() {
-	$('serv_content').show();
-	$('sp_content').hide();
-	$('vit_content').hide();
-	$('link_to_service_tab').addClassName('selected');
-	$('link_to_spirituality_tab').removeClassName('selected');
-	$('link_to_vitality_tab').removeClassName('selected');
-	});
-						   
-</script>    
-	
+widgetTabsInit();
+//go for the menu_items in a category
+function populate_items(caller, target){
+  spinner = target+'_spinner';
+  target_id = target+'_url';
+  $(spinner).show();
+  new Ajax.Request(
+    '<%= content_list_admin_menu_items_url %>',
+    {
+      method: 'get',
+      parameters: {
+        select_tag_str: 'preference_values['+target_id+']',
+        category_id: target_id,
+        spinner_id: spinner,
+        category: caller.value
+      }
+    }
+  );
+}
+function setregion(thecaller, target){
+  var region = thecaller.value;
+  var target_to_display = target+'_link_options';
+   //alert (region);
+   if(region == ''){
+    $(target_to_display).show();
+  }else{
+    $(target_to_display).hide();
+  }
+}
+</script>
