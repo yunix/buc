@@ -1,17 +1,9 @@
 <%
-	if @preferences["region"] =="None"
-		
-		links = {}
-		links["link_spirituality"] =menu_item.url
-		links["link_vitality"] = @preferences["Vitality_url"]
-		links["link_service"] = @preferences["Service_url"]
-		
-	else
-		links = region_link(@preferences["region"])
-	end
-		
-
-
+	links = {}
+	
+	links["link_vitality"] = vitality (@preferences["vi_url"], @preferences["region_vi"])
+	links["link_spirituality"] = spirituality (@preferences["sp_url"], @preferences["region_sp"])
+	links["link_service"] = service (@preferences["se_url"], @preferences["region_se"])
 %>	
  
  <div class="widget basic widgetdiv1">
@@ -24,21 +16,21 @@
 		    loving enough to be defined by self-sacrifice. I find my greatest fulfillment on a journey toward purpose and wholeness.</p>
 		    <ul class="cf">
 			<li id="adventistSpirituality" class="adventist-life-callout">
-			    <a target="_blank" href="http://<%=links["link_spirituality"]%>">
+			    <a target="_blank" href="<%= links["link_spirituality"] %>">
 				<strong>Spirituality</strong>
 				My God loves without restraint...
 				<span class="go"></span>
 			    </a>
 			</li>
 			<li id="adventistVitality" class="adventist-life-callout">
-			    <a target="_blank" href="http://<%=links["link_vitality"]%>">
+			    <a target="_blank" href="<%= links["link_vitality"] %>">
 				<strong>Vitality</strong>
 				My Life is a gift to be valued...
 				<span class="go"></span>
 			    </a>
 			</li>
 			<li id="adventistService" class="adventist-life-callout">
-			    <a target="_blank" href="http://<%=links["link_service"]%>">
+			    <a target="_blank" href="<%= links["link_service"] %>">
 				<strong>Service</strong>
 							 My World is a place where people find hope...
 					 <span class="go"></span>
