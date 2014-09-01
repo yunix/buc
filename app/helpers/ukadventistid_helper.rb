@@ -1,23 +1,42 @@
 module UkadventistidHelper
 	
 # ==============================================================================================================
-def region_link(selected_region = nil)
+def vitality (selected_content, selected_region)
+	if selected_region == "National"
+		vitality_str = "http://adventist.org.uk/adventistlife/vitality"
+	elsif selected_region == ""
+		vitality_str = selected_content
+	else
+		vitality_str = "http://"+selected_region +  ".adventist.org.uk/adventistlife/vitality"
+	end 
+	return vitality_str
+end 
 		
-		if selected_region!="National" 
-			regionsubdomain = selected_region + "."  
-		else
-			regionsubdomain = ""
-		end
-		
-		urls = {}
-		urls["link_spirituality"] = regionsubdomain +  "adventist.org.uk/adventistlife/spirituality"
-		urls["link_vitality"] = regionsubdomain +  "adventist.org.uk/adventistlife/vitality"
-		urls["link_service"] = regionsubdomain +  "adventist.org.uk/adventistlife/service"
-		urls["link_beliefs"] = regionsubdomain +  "adventist.org.uk/adventistlife/beliefs"
-		
-		return urls
-	end
-	 
+#=============================================================================================================
+
+def spirituality (selected_content, selected_region)
+	if selected_region == "National"
+		spirituality_str = "http://adventist.org.uk/adventistlife/spirituality"
+	elsif selected_region == ""
+		spirituality_str = selected_region
+	else
+		spirituality_str = "http://"+selected_region +  ".adventist.org.uk/adventistlife/spirituality"
+	end 
+	return spirituality_str
+end 
+#==============================================================================================================
+
+def service (selected_content, selected_region)
+	if selected_region == "National"
+		service_str = "http://adventist.org.uk/adventistlife/service"
+	elsif selected_region == ""
+		service_str = selected_content
+	else
+		service_str= "http://"+selected_region +  ".adventist.org.uk/adventistlife/service"
+	end 
+	return service_str
+end 
+ 
 # ==============================================================================================================
 def menu_item_categories(selected = nil)
     options = '<option value="--Please Choose a Category--">--Please Choose a Category--</option>'
@@ -37,6 +56,4 @@ def menu_item_categories(selected = nil)
       end
 #==============================================================================================================
 # ==============================================================================================================
-
-
 end 
